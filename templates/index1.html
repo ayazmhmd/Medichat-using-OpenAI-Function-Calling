@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Assistant Chatbot</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100%;
+            background-color: #f0f4f8;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo {
+            font-size: 2.5em;
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+        .tagline {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+        .chatbot-toggle {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .chatbot-toggle:hover {
+            background-color: #2980b9;
+        }
+        .chatbot-container {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background-color: white;
+            transition: right 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .chatbot-container.open {
+            right: 0;
+        }
+        .chat-header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 20px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #3498db;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .user-input {
+            display: flex;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        #message-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        #send-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="logo">MediChat</div>
+            <div class="tagline">Your personal medical assistant</div>
+        </div>
+        <button class="chatbot-toggle" onclick="toggleChat()">Chat with MediChat</button>
+        <div class="chatbot-container" id="chatbot-container">
+            <div class="chat-header">MediChat Assistant</div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="user-input">
+                <input type="text" id="message-input" placeholder="Type your message...">
+                <button id="send-button" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const chatContainer = document.getElementById('chatbot-container');
+            chatContainer.classList.toggle('open');
+        }
+
+        function addMessage(content, isUser = false) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
+            messageElement.textContent = content;
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                messageInput.value = '';
+                
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    addMessage(data.response);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    addMessage('Sorry, there was an error processing your request.');
+                });
+            }
+        }
+
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
