@@ -7,4 +7,5 @@ This project is a demo chatbot for scheduling medical appointments. The chatbot 
 
 ## Video Demo
 
-https://github.com/user-attachments/assets/12eb577f-4036-4c93-be62-09c3ae4ed5dc
+https://github.com/user-attachments/assets/9cb09cf6-b931-4432-9ee3-abf7c4e494b5
+
