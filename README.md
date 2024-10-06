@@ -1,2 +1,10 @@
-# Medichat-using-OpenAI-Function-Calling
-The project is a demo chatbot for a medical appointment scheduler. It features a user-friendly front end built with HTML, CSS, and JavaScript, while the back end is developed in Python. The system includes complete function calls with various tools to recommend doctors, understand user problems, and facilitate appointment scheduling etc
+# Medichat Chatbot
+
+## Overview
+
+This project is a demo chatbot for scheduling medical appointments. The chatbot is built with a simple and intuitive front end using HTML, CSS, and JavaScript, and it uses Python for the back end. The primary aim is to assist users in recommending doctors, understanding their medical issues, and scheduling appointments.
+
+
+## Video Demo
+
+https://github.com/user-attachments/assets/12eb577f-4036-4c93-be62-09c3ae4ed5dc
